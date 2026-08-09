@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Vendora - Novo Anúncio</title>
+</head>
+
+<body>
+
+    <h1>Novo Anúncio</h1>
+
+    <form>
+
+        <p>
+            <label>Nome do produto:</label>
+            <input type="text" name="produto">
+        </p>
+
+        <p>
+            <label>Descrição:</label>
+            <textarea name="descricao"></textarea>
+        </p>
+
+        <p>
+            <label>Preço:</label>
+            <input type="number" name="preco" step="0.01">
+        </p>
+
+        <button type="submit">Cadastrar Anúncio</button>
+
+    </form>
+
+    <p>
+        <a href="{{ url_for('anuncios') }}">Voltar para Anúncios</a>
+    </p>
+
+</body>
+
+</html>

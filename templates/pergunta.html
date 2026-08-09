@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Vendora - Pergunta</title>
+</head>
+
+<body>
+
+    <h1>Fazer Pergunta</h1>
+
+    <form>
+
+        <p>
+            <label>Pergunta:</label>
+        </p>
+
+        <textarea name="pergunta" rows="5" cols="40"></textarea>
+
+        <p>
+            <button type="submit">
+                Enviar Pergunta
+            </button>
+        </p>
+
+    </form>
+
+    <p>
+        <a href="{{ url_for('anuncios') }}">
+            Voltar para Anúncios
+        </a>
+    </p>
+
+</body>
+
+</html>

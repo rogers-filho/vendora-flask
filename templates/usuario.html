@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Vendora - Cadastro</title>
+</head>
+
+<body>
+
+    <h1>{{ titulo }}</h1>
+
+    <form action="{{ url_for('caduser') }}" method="POST">
+
+        <p>
+            <label>Nome:</label>
+            <input type="text" name="nome">
+        </p>
+
+        <p>
+            <label>E-mail:</label>
+            <input type="email" name="email">
+        </p>
+
+        <p>
+            <label>Senha:</label>
+            <input type="password" name="senha">
+        </p>
+
+        <button type="submit">Cadastrar</button>
+
+    </form>
+
+    <p>
+        <a href="{{ url_for('index') }}">Voltar para Home</a>
+    </p>
+
+</body>
+
+</html>

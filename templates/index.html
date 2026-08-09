@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Vendora</title>
+</head>
+
+<body>
+
+    <h1>Vendora</h1>
+
+    <h3>Plataforma de compra e venda de produtos</h3>
+
+    <hr>
+
+    <h3>Menu de Navegação</h3>
+
+    <p>
+        <a href="{{ url_for('index') }}">
+            Home
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('login') }}">
+            Login
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('usuario') }}">
+            Cadastro
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('anuncios') }}">
+            Anúncios
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('meusAnuncios') }}">
+            Meus Anúncios
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('categoria') }}">
+            Categorias
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('favoritos') }}">
+            Meus Favoritos
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('minhasCompras') }}">
+            Minhas Compras
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('relatorios') }}">
+            Relatórios
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('perfil') }}">
+            Meu Perfil
+        </a>
+    </p>
+
+</body>
+
+</html>
