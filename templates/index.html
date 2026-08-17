@@ -15,17 +15,15 @@
 
     <h3>Menu de Navegação</h3>
 
+    <h4>Principal</h4>
+
     <p>
         <a href="{{ url_for('index') }}">
             Home
         </a>
     </p>
 
-    <p>
-        <a href="{{ url_for('login') }}">
-            Login
-        </a>
-    </p>
+    <h4>Usuário</h4>
 
     <p>
         <a href="{{ url_for('usuario') }}">
@@ -33,15 +31,11 @@
         </a>
     </p>
 
-    <p>
-        <a href="{{ url_for('anuncios') }}">
-            Anúncios
-        </a>
-    </p>
+    <h4>Anúncios</h4>
 
     <p>
-        <a href="{{ url_for('meusAnuncios') }}">
-            Meus Anúncios
+        <a href="{{ url_for('anuncio') }}">
+            Anúncios
         </a>
     </p>
 
@@ -51,27 +45,31 @@
         </a>
     </p>
 
+    <h4>Interação</h4>
+
     <p>
-        <a href="{{ url_for('favoritos') }}">
+        <a href="{{ url_for('pergunta') }}">
+            Perguntas
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('resposta') }}">
+            Respostas
+        </a>
+    </p>
+
+    <p>
+        <a href="{{ url_for('favorita') }}">
             Meus Favoritos
         </a>
     </p>
 
-    <p>
-        <a href="{{ url_for('minhasCompras') }}">
-            Minhas Compras
-        </a>
-    </p>
+    <h4>Compras</h4>
 
     <p>
-        <a href="{{ url_for('relatorios') }}">
-            Relatórios
-        </a>
-    </p>
-
-    <p>
-        <a href="{{ url_for('perfil') }}">
-            Meu Perfil
+        <a href="{{ url_for('compra') }}">
+            Compras
         </a>
     </p>
 

@@ -1,27 +1,67 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 
 <head>
-    <title>Vendora - Categorias</title>
+    <meta charset="UTF-8">
+    <title>Categorias - Vendora</title>
 </head>
 
 <body>
 
-    <h1>Categorias</h1>
+    <h1>Cadastro de Categoria</h1>
 
-    <ul>
-        <li>Eletrônicos</li>
-        <li>Informática</li>
-        <li>Celulares</li>
-        <li>Casa</li>
-        <li>Outros</li>
-    </ul>
+    <form action="{{ url_for('criarcategoria') }}" method="POST">
 
-    <p>
-        <a href="{{ url_for('index') }}">
-            Voltar para Home
-        </a>
-    </p>
+        <label>Nome:</label>
+        <input type="text" name="nome" required>
+
+        <br><br>
+
+        <label>Descrição:</label>
+        <textarea name="descricao" required></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Cadastrar categoria
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Categorias cadastradas</h2>
+
+    {% for categoria in categorias %}
+
+        <p>
+
+            <strong>ID:</strong> {{ categoria.id }}
+            <br>
+
+            <strong>Nome:</strong> {{ categoria.nome }}
+            <br>
+
+            <strong>Descrição:</strong> {{ categoria.descricao }}
+
+            <br><br>
+
+            <a href="{{ url_for('editarcategoria', id=categoria.id) }}">
+                Editar
+            </a>
+
+            |
+
+            <a href="{{ url_for('deletarcategoria', id=categoria.id) }}"
+               onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
+                Excluir
+            </a>
+
+        </p>
+
+        <hr>
+
+    {% endfor %}
 
 </body>
 

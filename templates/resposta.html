@@ -3,16 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Perguntas - Vendora</title>
+    <title>Respostas - Vendora</title>
 </head>
 
 <body>
 
-    <h1>Cadastro de Pergunta</h1>
+    <h1>Cadastro de Resposta</h1>
 
-    <form action="{{ url_for('criarpergunta') }}" method="POST">
+    <form action="{{ url_for('criarresposta') }}" method="POST">
 
-        <label>Pergunta:</label>
+        <label>Resposta:</label>
 
         <textarea
             name="texto"
@@ -41,18 +41,18 @@
 
         <br><br>
 
-        <label>Anúncio:</label>
+        <label>Pergunta:</label>
 
-        <select name="anu_id" required>
+        <select name="per_id" required>
 
             <option value="">
-                Selecione um anúncio
+                Selecione uma pergunta
             </option>
 
-            {% for anuncio in anuncios %}
+            {% for pergunta in perguntas %}
 
-                <option value="{{ anuncio.id }}">
-                    {{ anuncio.titulo }}
+                <option value="{{ pergunta.id }}">
+                    {{ pergunta.texto }}
                 </option>
 
             {% endfor %}
@@ -62,48 +62,48 @@
         <br><br>
 
         <button type="submit">
-            Cadastrar pergunta
+            Cadastrar resposta
         </button>
 
     </form>
 
     <hr>
 
-    <h2>Perguntas cadastradas</h2>
+    <h2>Respostas cadastradas</h2>
 
-    {% for pergunta in perguntas %}
+    {% for resposta in respostas %}
 
         <p>
 
             <strong>ID:</strong>
-            {{ pergunta.id }}
+            {{ resposta.id }}
 
             <br>
 
-            <strong>Pergunta:</strong>
-            {{ pergunta.texto }}
+            <strong>Resposta:</strong>
+            {{ resposta.texto }}
 
             <br>
 
             <strong>Usuário:</strong>
-            {{ pergunta.usuario.nome }}
+            {{ resposta.usuario.nome }}
 
             <br>
 
-            <strong>Anúncio:</strong>
-            {{ pergunta.anuncio.titulo }}
+            <strong>Pergunta:</strong>
+            {{ resposta.pergunta.texto }}
 
             <br><br>
 
-            <a href="{{ url_for('editarpergunta', id=pergunta.id) }}">
+            <a href="{{ url_for('editarresposta', id=resposta.id) }}">
                 Editar
             </a>
 
             |
 
             <a
-                href="{{ url_for('deletarpergunta', id=pergunta.id) }}"
-                onclick="return confirm('Tem certeza que deseja excluir esta pergunta?');"
+                href="{{ url_for('deletarresposta', id=resposta.id) }}"
+                onclick="return confirm('Tem certeza que deseja excluir esta resposta?');"
             >
                 Excluir
             </a>

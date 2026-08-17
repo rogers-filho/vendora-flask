@@ -3,23 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Perguntas - Vendora</title>
+    <title>Favoritas - Vendora</title>
 </head>
 
 <body>
 
-    <h1>Cadastro de Pergunta</h1>
+    <h1>Cadastro de Favorita</h1>
 
-    <form action="{{ url_for('criarpergunta') }}" method="POST">
-
-        <label>Pergunta:</label>
-
-        <textarea
-            name="texto"
-            required
-        ></textarea>
-
-        <br><br>
+    <form action="{{ url_for('criarfavorita') }}" method="POST">
 
         <label>Usuário:</label>
 
@@ -62,48 +53,43 @@
         <br><br>
 
         <button type="submit">
-            Cadastrar pergunta
+            Cadastrar favorita
         </button>
 
     </form>
 
     <hr>
 
-    <h2>Perguntas cadastradas</h2>
+    <h2>Favoritas cadastradas</h2>
 
-    {% for pergunta in perguntas %}
+    {% for favorita in favoritas %}
 
         <p>
 
             <strong>ID:</strong>
-            {{ pergunta.id }}
-
-            <br>
-
-            <strong>Pergunta:</strong>
-            {{ pergunta.texto }}
+            {{ favorita.id }}
 
             <br>
 
             <strong>Usuário:</strong>
-            {{ pergunta.usuario.nome }}
+            {{ favorita.usuario.nome }}
 
             <br>
 
             <strong>Anúncio:</strong>
-            {{ pergunta.anuncio.titulo }}
+            {{ favorita.anuncio.titulo }}
 
             <br><br>
 
-            <a href="{{ url_for('editarpergunta', id=pergunta.id) }}">
+            <a href="{{ url_for('editarfavorita', id=favorita.id) }}">
                 Editar
             </a>
 
             |
 
             <a
-                href="{{ url_for('deletarpergunta', id=pergunta.id) }}"
-                onclick="return confirm('Tem certeza que deseja excluir esta pergunta?');"
+                href="{{ url_for('deletarfavorita', id=favorita.id) }}"
+                onclick="return confirm('Tem certeza que deseja excluir esta favorita?');"
             >
                 Excluir
             </a>

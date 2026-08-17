@@ -1,38 +1,98 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 
 <head>
-    <title>Vendora - Cadastro</title>
+    <meta charset="UTF-8">
+    <title>Usuários - Vendora</title>
 </head>
 
 <body>
 
-    <h1>{{ titulo }}</h1>
+    <h1>Cadastro de Usuário</h1>
 
-    <form action="{{ url_for('caduser') }}" method="POST">
+    <form action="{{ url_for('criarusuario') }}" method="POST">
 
-        <p>
-            <label>Nome:</label>
-            <input type="text" name="nome">
-        </p>
+        <label>Nome:</label>
+        <input type="text" name="nome" required>
 
-        <p>
-            <label>E-mail:</label>
-            <input type="email" name="email">
-        </p>
+        <br><br>
 
-        <p>
-            <label>Senha:</label>
-            <input type="password" name="senha">
-        </p>
+        <label>E-mail:</label>
+        <input type="email" name="email" required>
+
+        <br><br>
+
+        <label>Senha:</label>
+        <input type="password" name="senha" required>
+
+        <br>
+       <h2>Endereço</h2>
+            <label>Rua:</label>
+            <input type="text" name="rua">
+            <br><br>
+            <label>Número:</label>
+            <input type="text" name="numero">
+            <br><br>
+            <label>Bairro:</label>
+            <input type="text" name="bairro">
+            <br><br>
+            <label>Cidade:</label>
+            <input type="text" name="cidade">
+            <br><br>
+            <label>CEP:</label>
+            <input type="text" name="cep">
+            <br><br>
+        <br>
 
         <button type="submit">Cadastrar</button>
 
     </form>
 
-    <p>
-        <a href="{{ url_for('index') }}">Voltar para Home</a>
-    </p>
+    <hr>
+
+    <h2>Usuários cadastrados</h2>
+
+    {% for usuario in usuarios %}
+
+        <p>
+            <strong>ID:</strong> {{ usuario.id }}
+            <br>
+
+            <strong>Nome:</strong> {{ usuario.nome }}
+            <br>
+
+            <strong>E-mail:</strong> {{ usuario.email }}
+            <br>
+
+            <h4>Endereço</h4>
+
+            {% for endereco in enderecos %}
+
+                {% if endereco.usu_id == usuario.id %}
+
+                    <p>Rua: {{ endereco.rua }}</p>
+                    <p>Número: {{ endereco.numero }}</p>
+                    <p>Bairro: {{ endereco.bairro }}</p>
+                    <p>Cidade: {{ endereco.cidade }}</p>
+                    <p>CEP: {{ endereco.cep }}</p>
+
+                {% endif %}
+
+            {% endfor %}
+            <br>
+
+            
+            <a href="{{ url_for('editarusuario', id=usuario.id) }}">
+                <button type="button">Editar</button></a>
+
+            <a href="{{ url_for('deletarusuario', id=usuario.id) }}"
+            onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
+            <button type="button">Deletar</button></a>
+        </p>
+
+        <hr>
+
+    {% endfor %}
 
 </body>
 

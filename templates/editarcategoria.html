@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Categoria - Vendora</title>
+</head>
+
+<body>
+
+    <h1>Editar Categoria</h1>
+
+    <form action="{{ url_for('editarcategoria', id=categoria.id) }}" method="POST">
+
+        <label>Nome:</label>
+
+        <input
+            type="text"
+            name="nome"
+            value="{{ categoria.nome }}"
+            required
+        >
+
+        <br><br>
+
+        <label>Descrição:</label>
+
+        <textarea
+            name="descricao"
+            required
+        >{{ categoria.descricao }}</textarea>
+
+        <br><br>
+
+        <button
+            type="submit"
+            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
+        >
+            Salvar alterações
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('categoria') }}">
+        Voltar para categorias
+    </a>
+
+</body>
+
+</html>

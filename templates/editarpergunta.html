@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Pergunta - Vendora</title>
+</head>
+
+<body>
+
+    <h1>Editar Pergunta</h1>
+
+    <form
+        action="{{ url_for('editarpergunta', id=pergunta.id) }}"
+        method="POST"
+    >
+
+        <label>Pergunta:</label>
+
+        <textarea
+            name="texto"
+            required
+        >{{ pergunta.texto }}</textarea>
+
+        <br><br>
+
+        <label>Usuário:</label>
+
+        <select name="usu_id" required>
+
+            {% for usuario in usuarios %}
+
+                <option
+                    value="{{ usuario.id }}"
+                    {% if pergunta.usu_id == usuario.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ usuario.nome }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <label>Anúncio:</label>
+
+        <select name="anu_id" required>
+
+            {% for anuncio in anuncios %}
+
+                <option
+                    value="{{ anuncio.id }}"
+                    {% if pergunta.anu_id == anuncio.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ anuncio.titulo }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <button
+            type="submit"
+            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
+        >
+            Salvar alterações
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('pergunta') }}">
+        Voltar para perguntas
+    </a>
+
+</body>
+
+</html>

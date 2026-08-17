@@ -1,38 +1,132 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 
 <head>
-    <title>Vendora - Novo Anúncio</title>
+    <meta charset="UTF-8">
+    <title>Anúncios - Vendora</title>
 </head>
 
 <body>
 
-    <h1>Novo Anúncio</h1>
+    <h1>Cadastro de Anúncio</h1>
 
-    <form>
+    <form action="{{ url_for('criaranuncio') }}" method="POST">
 
-        <p>
-            <label>Nome do produto:</label>
-            <input type="text" name="produto">
-        </p>
+        <label>Título:</label>
+        <input type="text" name="titulo" required>
 
-        <p>
-            <label>Descrição:</label>
-            <textarea name="descricao"></textarea>
-        </p>
+        <br><br>
 
-        <p>
-            <label>Preço:</label>
-            <input type="number" name="preco" step="0.01">
-        </p>
+        <label>Descrição:</label>
+        <textarea name="descricao" required></textarea>
 
-        <button type="submit">Cadastrar Anúncio</button>
+        <br><br>
+
+        <label>Preço:</label>
+        <input type="number" name="preco" step="0.01" required>
+
+        <br><br>
+
+        <label>Quantidade:</label>
+        <input type="number" name="quantidade" required>
+
+        <br><br>
+
+        <label>Usuário:</label>
+
+        <select name="usu_id" required>
+
+            <option value="">Selecione um usuário</option>
+
+            {% for usuario in usuarios %}
+
+                <option value="{{ usuario.id }}">
+                    {{ usuario.nome }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+        <button type="submit">
+            Cadastrar anúncio
+        </button>
 
     </form>
 
-    <p>
-        <a href="{{ url_for('anuncios') }}">Voltar para Anúncios</a>
-    </p>
+    <hr>
+
+    <h2>Anúncios cadastrados</h2>
+
+    {% for anuncio in anuncios %}
+
+        <p>
+            <strong>ID:</strong> {{ anuncio.id }}
+            <br>
+
+            <strong>Título:</strong> {{ anuncio.titulo }}
+            <br>
+
+            <strong>Descrição:</strong> {{ anuncio.descricao }}
+            <br>
+
+            <strong>Preço:</strong> R$ {{ anuncio.preco }}
+            <br>
+
+            <strong>Quantidade:</strong> {{ anuncio.quantidade }}
+            <br><br>
+
+            <br><br>
+
+            <label>Categoria:</label>
+
+            <select name="cat_id" required>
+
+                <option value="">Selecione uma categoria</option>
+
+                {% for categoria in categorias %}
+
+                    <option value="{{ categoria.id }}">
+                        {{ categoria.nome }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+           <br><br>
+
+            <label>Usuário:</label>
+
+            <select name="usu_id" required>
+
+                <option value="">Selecione um usuário</option>
+
+                {% for usuario in usuarios %}
+
+                    <option value="{{ usuario.id }}">
+                        {{ usuario.nome }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+            <br><br>
+
+            <a href="{{ url_for('editaranuncio', id=anuncio.id) }}">
+                Editar
+            </a>
+
+            <a href="{{ url_for('deletaranuncio', id=anuncio.id) }}"
+               onclick="return confirm('Tem certeza que deseja excluir este anúncio?');">
+                Excluir
+            </a>
+        </p>
+
+        <hr>
+
+    {% endfor %}
 
 </body>
 

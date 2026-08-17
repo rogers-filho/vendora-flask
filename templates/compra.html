@@ -3,23 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Perguntas - Vendora</title>
+    <title>Compras - Vendora</title>
 </head>
 
 <body>
 
-    <h1>Cadastro de Pergunta</h1>
+    <h1>Cadastro de Compra</h1>
 
-    <form action="{{ url_for('criarpergunta') }}" method="POST">
-
-        <label>Pergunta:</label>
-
-        <textarea
-            name="texto"
-            required
-        ></textarea>
-
-        <br><br>
+    <form action="{{ url_for('criarcompra') }}" method="POST">
 
         <label>Usuário:</label>
 
@@ -61,49 +52,76 @@
 
         <br><br>
 
+        <label>Quantidade:</label>
+
+        <input
+            type="number"
+            name="quantidade"
+            min="1"
+            required
+        >
+
+        <br><br>
+
+        <label>Valor:</label>
+
+        <input
+            type="number"
+            name="valor"
+            step="0.01"
+            required
+        >
+
+        <br><br>
+
         <button type="submit">
-            Cadastrar pergunta
+            Cadastrar compra
         </button>
 
     </form>
 
     <hr>
 
-    <h2>Perguntas cadastradas</h2>
+    <h2>Compras cadastradas</h2>
 
-    {% for pergunta in perguntas %}
+    {% for compra in compras %}
 
         <p>
 
             <strong>ID:</strong>
-            {{ pergunta.id }}
-
-            <br>
-
-            <strong>Pergunta:</strong>
-            {{ pergunta.texto }}
+            {{ compra.id }}
 
             <br>
 
             <strong>Usuário:</strong>
-            {{ pergunta.usuario.nome }}
+            {{ compra.usuario.nome }}
 
             <br>
 
             <strong>Anúncio:</strong>
-            {{ pergunta.anuncio.titulo }}
+            {{ compra.anuncio.titulo }}
+
+            <br>
+
+            <strong>Quantidade:</strong>
+            {{ compra.quantidade }}
+
+            <br>
+
+            <strong>Valor:</strong>
+            R$ {{ compra.valor }}
 
             <br><br>
 
-            <a href="{{ url_for('editarpergunta', id=pergunta.id) }}">
+            <a href="{{ url_for('editarcompra', id=compra.id) }}">
                 Editar
             </a>
 
             |
 
             <a
-                href="{{ url_for('deletarpergunta', id=pergunta.id) }}"
-                onclick="return confirm('Tem certeza que deseja excluir esta pergunta?');"
+                href="{{ url_for('deletarcompra', id=compra.id) }}"
+                onclick="return confirm('Tem certeza que deseja excluir esta compra?');"
             >
                 Excluir
             </a>
