@@ -1,119 +1,293 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Respostas - Vendora</title>
-</head>
+{% block title %}
+Respostas - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Cadastro de Resposta</h1>
+<!-- CABEÇALHO -->
 
-    <form action="{{ url_for('criarresposta') }}" method="POST">
+<div class="mb-4">
 
-        <label>Resposta:</label>
+    <h1 class="fw-bold">
+        Cadastro de Resposta
+    </h1>
 
-        <textarea
-            name="texto"
-            required
-        ></textarea>
+    <p class="text-muted">
+        Responda às perguntas realizadas sobre os anúncios.
+    </p>
 
-        <br><br>
+</div>
 
-        <label>Usuário:</label>
 
-        <select name="usu_id" required>
+<!-- FORMULÁRIO -->
 
-            <option value="">
-                Selecione um usuário
-            </option>
+<div class="card shadow-sm mb-5">
 
-            {% for usuario in usuarios %}
+    <div class="card-header bg-primary text-white">
 
-                <option value="{{ usuario.id }}">
-                    {{ usuario.nome }}
-                </option>
+        <h4 class="mb-0">
+            Nova resposta
+        </h4>
 
-            {% endfor %}
+    </div>
 
-        </select>
+    <div class="card-body">
 
-        <br><br>
+        <form
+            action="{{ url_for('criarresposta') }}"
+            method="POST">
 
-        <label>Pergunta:</label>
+            <div class="row">
 
-        <select name="per_id" required>
+                <!-- RESPOSTA -->
 
-            <option value="">
-                Selecione uma pergunta
-            </option>
+                <div class="col-12 mb-3">
 
-            {% for pergunta in perguntas %}
+                    <label for="texto" class="form-label">
+                        Resposta
+                    </label>
 
-                <option value="{{ pergunta.id }}">
-                    {{ pergunta.texto }}
-                </option>
+                    <textarea
+                        class="form-control"
+                        id="texto"
+                        name="texto"
+                        rows="4"
+                        placeholder="Digite sua resposta..."
+                        required
+                    ></textarea>
 
-            {% endfor %}
+                </div>
 
-        </select>
 
-        <br><br>
+                <!-- USUÁRIO -->
 
-        <button type="submit">
-            Cadastrar resposta
-        </button>
+                <div class="col-md-6 mb-3">
 
-    </form>
+                    <label for="usu_id" class="form-label">
+                        Usuário
+                    </label>
 
-    <hr>
+                    <select
+                        class="form-select"
+                        id="usu_id"
+                        name="usu_id"
+                        required>
 
-    <h2>Respostas cadastradas</h2>
+                        <option value="">
+                            Selecione um usuário
+                        </option>
+
+                        {% for usuario in usuarios %}
+
+                            <option value="{{ usuario.id }}">
+                                {{ usuario.nome }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- PERGUNTA -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="per_id" class="form-label">
+                        Pergunta
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="per_id"
+                        name="per_id"
+                        required>
+
+                        <option value="">
+                            Selecione uma pergunta
+                        </option>
+
+                        {% for pergunta in perguntas %}
+
+                            <option value="{{ pergunta.id }}">
+                                {{ pergunta.texto }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                Cadastrar resposta
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- RESPOSTAS CADASTRADAS -->
+
+<div class="mb-3">
+
+    <h2 class="fw-bold">
+        Respostas cadastradas
+    </h2>
+
+    <p class="text-muted">
+        Respostas registradas no sistema.
+    </p>
+
+</div>
+
+
+<div class="row g-4">
 
     {% for resposta in respostas %}
 
-        <p>
+    <div class="col-md-6 col-lg-4">
 
-            <strong>ID:</strong>
-            {{ resposta.id }}
+        <div class="card h-100 shadow-sm">
 
-            <br>
+            <div class="card-body">
 
-            <strong>Resposta:</strong>
-            {{ resposta.texto }}
+                <!-- CABEÇALHO DO CARD -->
 
-            <br>
+                <div class="d-flex justify-content-between align-items-start mb-3">
 
-            <strong>Usuário:</strong>
-            {{ resposta.usuario.nome }}
+                    <h5 class="card-title mb-0">
+                        Resposta
+                    </h5>
 
-            <br>
+                    <span class="badge bg-secondary">
+                        ID {{ resposta.id }}
+                    </span>
 
-            <strong>Pergunta:</strong>
-            {{ resposta.pergunta.texto }}
+                </div>
 
-            <br><br>
 
-            <a href="{{ url_for('editarresposta', id=resposta.id) }}">
-                Editar
-            </a>
+                <!-- TEXTO DA RESPOSTA -->
 
-            |
+                <p class="card-text">
 
-            <a
-                href="{{ url_for('deletarresposta', id=resposta.id) }}"
-                onclick="return confirm('Tem certeza que deseja excluir esta resposta?');"
-            >
-                Excluir
-            </a>
+                    {{ resposta.texto }}
 
-        </p>
+                </p>
 
-        <hr>
+                <hr>
+
+
+                <!-- USUÁRIO -->
+
+                <p class="mb-2">
+
+                    <strong>
+                        Usuário:
+                    </strong>
+
+                    {% if resposta.usuario %}
+
+                        {{ resposta.usuario.nome }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informado
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- PERGUNTA -->
+
+                <p class="mb-0">
+
+                    <strong>
+                        Pergunta:
+                    </strong>
+
+                    {% if resposta.pergunta %}
+
+                        {{ resposta.pergunta.texto }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informada
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="card-footer bg-white border-0 pb-3">
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{{ url_for('editarresposta', id=resposta.id) }}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('deletarresposta', id=resposta.id) }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Tem certeza que deseja excluir esta resposta?');">
+
+                        Excluir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Nenhuma resposta cadastrada.
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

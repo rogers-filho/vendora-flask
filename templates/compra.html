@@ -1,137 +1,346 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Compras - Vendora</title>
-</head>
+{% block title %}
+Compras - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Cadastro de Compra</h1>
+<!-- CABEÇALHO -->
 
-    <form action="{{ url_for('criarcompra') }}" method="POST">
+<div class="mb-4">
 
-        <label>Usuário:</label>
+    <h1 class="fw-bold">
+        Cadastro de Compra
+    </h1>
 
-        <select name="usu_id" required>
+    <p class="text-muted">
+        Registre as compras realizadas na plataforma Vendora.
+    </p>
 
-            <option value="">
-                Selecione um usuário
-            </option>
+</div>
 
-            {% for usuario in usuarios %}
 
-                <option value="{{ usuario.id }}">
-                    {{ usuario.nome }}
-                </option>
+<!-- FORMULÁRIO -->
 
-            {% endfor %}
+<div class="card shadow-sm mb-5">
 
-        </select>
+    <div class="card-header bg-primary text-white">
 
-        <br><br>
+        <h4 class="mb-0">
+            Nova compra
+        </h4>
 
-        <label>Anúncio:</label>
+    </div>
 
-        <select name="anu_id" required>
+    <div class="card-body">
 
-            <option value="">
-                Selecione um anúncio
-            </option>
+        <form
+            action="{{ url_for('criarcompra') }}"
+            method="POST">
 
-            {% for anuncio in anuncios %}
+            <div class="row">
 
-                <option value="{{ anuncio.id }}">
-                    {{ anuncio.titulo }}
-                </option>
+                <!-- USUÁRIO -->
 
-            {% endfor %}
+                <div class="col-md-6 mb-3">
 
-        </select>
+                    <label for="usu_id" class="form-label">
+                        Usuário
+                    </label>
 
-        <br><br>
+                    <select
+                        class="form-select"
+                        id="usu_id"
+                        name="usu_id"
+                        required>
 
-        <label>Quantidade:</label>
+                        <option value="">
+                            Selecione um usuário
+                        </option>
 
-        <input
-            type="number"
-            name="quantidade"
-            min="1"
-            required
-        >
+                        {% for usuario in usuarios %}
 
-        <br><br>
+                            <option value="{{ usuario.id }}">
+                                {{ usuario.nome }}
+                            </option>
 
-        <label>Valor:</label>
+                        {% endfor %}
 
-        <input
-            type="number"
-            name="valor"
-            step="0.01"
-            required
-        >
+                    </select>
 
-        <br><br>
+                </div>
 
-        <button type="submit">
-            Cadastrar compra
-        </button>
 
-    </form>
+                <!-- ANÚNCIO -->
 
-    <hr>
+                <div class="col-md-6 mb-3">
 
-    <h2>Compras cadastradas</h2>
+                    <label for="anu_id" class="form-label">
+                        Anúncio
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="anu_id"
+                        name="anu_id"
+                        required>
+
+                        <option value="">
+                            Selecione um anúncio
+                        </option>
+
+                        {% for anuncio in anuncios %}
+
+                            <option value="{{ anuncio.id }}">
+                                {{ anuncio.titulo }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUANTIDADE -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="quantidade" class="form-label">
+                        Quantidade
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="quantidade"
+                        name="quantidade"
+                        min="1"
+                        placeholder="Informe a quantidade"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- VALOR -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="valor" class="form-label">
+                        Valor
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            R$
+                        </span>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="valor"
+                            name="valor"
+                            step="0.01"
+                            min="0"
+                            placeholder="0,00"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                Cadastrar compra
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- COMPRAS CADASTRADAS -->
+
+<div class="mb-3">
+
+    <h2 class="fw-bold">
+        Compras cadastradas
+    </h2>
+
+    <p class="text-muted">
+        Compras registradas no sistema.
+    </p>
+
+</div>
+
+
+<div class="row g-4">
 
     {% for compra in compras %}
 
-        <p>
+    <div class="col-md-6 col-lg-4">
 
-            <strong>ID:</strong>
-            {{ compra.id }}
+        <div class="card h-100 shadow-sm">
 
-            <br>
+            <div class="card-body">
 
-            <strong>Usuário:</strong>
-            {{ compra.usuario.nome }}
+                <!-- CABEÇALHO -->
 
-            <br>
+                <div class="d-flex justify-content-between align-items-start mb-3">
 
-            <strong>Anúncio:</strong>
-            {{ compra.anuncio.titulo }}
+                    <h5 class="card-title mb-0">
+                        Compra
+                    </h5>
 
-            <br>
+                    <span class="badge bg-secondary">
+                        ID {{ compra.id }}
+                    </span>
 
-            <strong>Quantidade:</strong>
-            {{ compra.quantidade }}
+                </div>
 
-            <br>
 
-            <strong>Valor:</strong>
-            R$ {{ compra.valor }}
+                <!-- USUÁRIO -->
 
-            <br><br>
+                <p class="mb-2">
 
-            <a href="{{ url_for('editarcompra', id=compra.id) }}">
-                Editar
-            </a>
+                    <strong>
+                        Usuário:
+                    </strong>
 
-            |
+                    {% if compra.usuario %}
 
-            <a
-                href="{{ url_for('deletarcompra', id=compra.id) }}"
-                onclick="return confirm('Tem certeza que deseja excluir esta compra?');"
-            >
-                Excluir
-            </a>
+                        {{ compra.usuario.nome }}
 
-        </p>
+                    {% else %}
 
-        <hr>
+                        <span class="text-muted">
+                            Não informado
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- ANÚNCIO -->
+
+                <p class="mb-2">
+
+                    <strong>
+                        Anúncio:
+                    </strong>
+
+                    {% if compra.anuncio %}
+
+                        {{ compra.anuncio.titulo }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informado
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- QUANTIDADE -->
+
+                <p class="mb-2">
+
+                    <strong>
+                        Quantidade:
+                    </strong>
+
+                    {{ compra.quantidade }}
+
+                </p>
+
+
+                <hr>
+
+
+                <!-- VALOR -->
+
+                <p class="mb-0">
+
+                    <strong>
+                        Valor:
+                    </strong>
+
+                    <span class="text-success fw-bold">
+
+                        R$ {{ "%.2f"|format(compra.valor|float) }}
+
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="card-footer bg-white border-0 pb-3">
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{{ url_for('editarcompra', id=compra.id) }}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('deletarcompra', id=compra.id) }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Tem certeza que deseja excluir esta compra?');">
+
+                        Excluir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Nenhuma compra cadastrada.
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

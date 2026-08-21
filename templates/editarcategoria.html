@@ -1,52 +1,111 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Categoria - Vendora</title>
-</head>
+{% block title %}
+Editar Categoria - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Editar Categoria</h1>
+<div class="mb-4">
 
-    <form action="{{ url_for('editarcategoria', id=categoria.id) }}" method="POST">
+    <h1 class="fw-bold">
+        Editar Categoria
+    </h1>
 
-        <label>Nome:</label>
+    <p class="text-muted">
+        Altere as informações da categoria cadastrada.
+    </p>
 
-        <input
-            type="text"
-            name="nome"
-            value="{{ categoria.nome }}"
-            required
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+            Dados da categoria
+        </h4>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <form
+            action="{{ url_for('editarcategoria', id=categoria.id) }}"
+            method="POST"
+            onsubmit="return confirm('Tem certeza que deseja salvar as alterações?');"
         >
 
-        <br><br>
+            <!-- NOME -->
 
-        <label>Descrição:</label>
+            <div class="mb-3">
 
-        <textarea
-            name="descricao"
-            required
-        >{{ categoria.descricao }}</textarea>
+                <label for="nome" class="form-label">
+                    Nome
+                </label>
 
-        <br><br>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="nome"
+                    name="nome"
+                    value="{{ categoria.nome }}"
+                    required
+                >
 
-        <button
-            type="submit"
-            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
-        >
-            Salvar alterações
-        </button>
+            </div>
 
-    </form>
 
-    <br>
+            <!-- DESCRIÇÃO -->
 
-    <a href="{{ url_for('categoria') }}">
-        Voltar para categorias
-    </a>
+            <div class="mb-3">
 
-</body>
+                <label for="descricao" class="form-label">
+                    Descrição
+                </label>
 
-</html>
+                <textarea
+                    class="form-control"
+                    id="descricao"
+                    name="descricao"
+                    rows="5"
+                    required
+                >{{ categoria.descricao }}</textarea>
+
+            </div>
+
+
+            <!-- BOTÕES -->
+
+            <div class="d-flex gap-2 mt-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                >
+
+                    Salvar alterações
+
+                </button>
+
+
+                <a
+                    href="{{ url_for('categoria') }}"
+                    class="btn btn-secondary"
+                >
+
+                    Voltar
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

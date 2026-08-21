@@ -1,101 +1,197 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Compra - Vendora</title>
-</head>
+{% block title %}
+Editar Compra - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Editar Compra</h1>
+<div class="mb-4">
 
-    <form
-        action="{{ url_for('editarcompra', id=compra.id) }}"
-        method="POST"
-    >
+    <h1 class="fw-bold">
+        Editar Compra
+    </h1>
 
-        <label>Usuário:</label>
+    <p class="text-muted">
+        Altere os dados da compra cadastrada.
+    </p>
 
-        <select name="usu_id" required>
+</div>
 
-            {% for usuario in usuarios %}
 
-                <option
-                    value="{{ usuario.id }}"
-                    {% if compra.usu_id == usuario.id %}
-                        selected
-                    {% endif %}
+<div class="card shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+            Dados da compra
+        </h4>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <form
+            action="{{ url_for('editarcompra', id=compra.id) }}"
+            method="POST"
+            onsubmit="return confirm('Tem certeza que deseja salvar as alterações?');"
+        >
+
+            <div class="row">
+
+                <!-- USUÁRIO -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="usu_id" class="form-label">
+                        Usuário
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="usu_id"
+                        name="usu_id"
+                        required
+                    >
+
+                        {% for usuario in usuarios %}
+
+                            <option
+                                value="{{ usuario.id }}"
+                                {% if compra.usu_id == usuario.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ usuario.nome }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- ANÚNCIO -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="anu_id" class="form-label">
+                        Anúncio
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="anu_id"
+                        name="anu_id"
+                        required
+                    >
+
+                        {% for anuncio in anuncios %}
+
+                            <option
+                                value="{{ anuncio.id }}"
+                                {% if compra.anu_id == anuncio.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ anuncio.titulo }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- QUANTIDADE -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="quantidade" class="form-label">
+                        Quantidade
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="quantidade"
+                        name="quantidade"
+                        min="1"
+                        value="{{ compra.quantidade }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- VALOR -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="valor" class="form-label">
+                        Valor
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            R$
+                        </span>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="valor"
+                            name="valor"
+                            step="0.01"
+                            min="0"
+                            value="{{ compra.valor }}"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÕES -->
+
+            <div class="d-flex gap-2 mt-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
                 >
-                    {{ usuario.nome }}
-                </option>
 
-            {% endfor %}
+                    Salvar alterações
 
-        </select>
+                </button>
 
-        <br><br>
 
-        <label>Anúncio:</label>
-
-        <select name="anu_id" required>
-
-            {% for anuncio in anuncios %}
-
-                <option
-                    value="{{ anuncio.id }}"
-                    {% if compra.anu_id == anuncio.id %}
-                        selected
-                    {% endif %}
+                <a
+                    href="{{ url_for('compra') }}"
+                    class="btn btn-secondary"
                 >
-                    {{ anuncio.titulo }}
-                </option>
 
-            {% endfor %}
+                    Voltar
 
-        </select>
+                </a>
 
-        <br><br>
+            </div>
 
-        <label>Quantidade:</label>
+        </form>
 
-        <input
-            type="number"
-            name="quantidade"
-            min="1"
-            value="{{ compra.quantidade }}"
-            required
-        >
+    </div>
 
-        <br><br>
+</div>
 
-        <label>Valor:</label>
-
-        <input
-            type="number"
-            name="valor"
-            step="0.01"
-            value="{{ compra.valor }}"
-            required
-        >
-
-        <br><br>
-
-        <button
-            type="submit"
-            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
-        >
-            Salvar alterações
-        </button>
-
-    </form>
-
-    <br>
-
-    <a href="{{ url_for('compra') }}">
-        Voltar para compras
-    </a>
-
-</body>
-
-</html>
+{% endblock %}

@@ -1,68 +1,199 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Categorias - Vendora</title>
-</head>
+{% block title %}
+Categorias - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Cadastro de Categoria</h1>
+<!-- CABEÇALHO -->
 
-    <form action="{{ url_for('criarcategoria') }}" method="POST">
+<div class="mb-4">
 
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
+    <h1 class="fw-bold">
+        Cadastro de Categoria
+    </h1>
 
-        <br><br>
+    <p class="text-muted">
+        Cadastre e gerencie as categorias dos produtos da Vendora.
+    </p>
 
-        <label>Descrição:</label>
-        <textarea name="descricao" required></textarea>
+</div>
 
-        <br><br>
 
-        <button type="submit">
-            Cadastrar categoria
-        </button>
+<!-- FORMULÁRIO -->
 
-    </form>
+<div class="card shadow-sm mb-5">
 
-    <hr>
+    <div class="card-header bg-primary text-white">
 
-    <h2>Categorias cadastradas</h2>
+        <h4 class="mb-0">
+            Nova categoria
+        </h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form
+            action="{{ url_for('criarcategoria') }}"
+            method="POST">
+
+            <div class="row">
+
+                <!-- NOME -->
+
+                <div class="col-md-5 mb-3">
+
+                    <label for="nome" class="form-label">
+                        Nome
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="nome"
+                        name="nome"
+                        placeholder="Nome da categoria"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DESCRIÇÃO -->
+
+                <div class="col-md-7 mb-3">
+
+                    <label for="descricao" class="form-label">
+                        Descrição
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        id="descricao"
+                        name="descricao"
+                        rows="3"
+                        placeholder="Descrição da categoria"
+                        required
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                Cadastrar categoria
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- CATEGORIAS CADASTRADAS -->
+
+<div class="mb-3">
+
+    <h2 class="fw-bold">
+        Categorias cadastradas
+    </h2>
+
+    <p class="text-muted">
+        Categorias disponíveis no sistema.
+    </p>
+
+</div>
+
+
+<div class="row g-4">
 
     {% for categoria in categorias %}
 
-        <p>
+    <div class="col-md-6 col-lg-4">
 
-            <strong>ID:</strong> {{ categoria.id }}
-            <br>
+        <div class="card h-100 shadow-sm">
 
-            <strong>Nome:</strong> {{ categoria.nome }}
-            <br>
+            <div class="card-body">
 
-            <strong>Descrição:</strong> {{ categoria.descricao }}
+                <div class="d-flex justify-content-between align-items-start mb-3">
 
-            <br><br>
+                    <h5 class="card-title mb-0">
+                        {{ categoria.nome }}
+                    </h5>
 
-            <a href="{{ url_for('editarcategoria', id=categoria.id) }}">
-                Editar
-            </a>
+                    <span class="badge bg-secondary">
+                        ID {{ categoria.id }}
+                    </span>
 
-            |
+                </div>
 
-            <a href="{{ url_for('deletarcategoria', id=categoria.id) }}"
-               onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
-                Excluir
-            </a>
 
-        </p>
+                <p class="card-text text-muted">
 
-        <hr>
+                    {{ categoria.descricao }}
+
+                </p>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="card-footer bg-white border-0 pb-3">
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{{ url_for('editarcategoria', id=categoria.id) }}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('deletarcategoria', id=categoria.id) }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">
+
+                        Excluir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Nenhuma categoria cadastrada.
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

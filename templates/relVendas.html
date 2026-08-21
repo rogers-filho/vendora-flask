@@ -1,21 +1,239 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 
 <head>
-    <title>Vendora - Relatório de Vendas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Relatório de Vendas - Vendora</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 </head>
 
-<body>
+<body class="bg-light">
 
-    <h1>Relatório de Vendas</h1>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark bg-dark">
 
-    <p>Aqui será apresentado o relatório de vendas do usuário.</p>
+        <div class="container">
 
-    <p>
-        <a href="{{ url_for('relatorios') }}">
-            Voltar para Relatórios
-        </a>
-    </p>
+            <a
+                class="navbar-brand"
+                href="{{ url_for('index') }}"
+            >
+                Vendora
+            </a>
+
+            <div class="d-flex">
+
+                <a
+                    href="{{ url_for('perfil') }}"
+                    class="btn btn-outline-light me-2"
+                >
+                    Meu Perfil
+                </a>
+
+                <a
+                    href="{{ url_for('logout') }}"
+                    class="btn btn-danger"
+                >
+                    Sair
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- CONTEÚDO -->
+    <div class="container py-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <div>
+
+                <h1 class="fw-bold">
+                    Relatório de Vendas
+                </h1>
+
+                <p class="text-muted mb-0">
+                    Consulte as vendas realizadas através dos seus anúncios.
+                </p>
+
+            </div>
+
+            <a
+                href="{{ url_for('index') }}"
+                class="btn btn-secondary"
+            >
+                Voltar
+            </a>
+
+        </div>
+
+
+        <!-- RESUMO -->
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-4">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Total de vendas
+                        </h6>
+
+                        <h2 class="fw-bold">
+                            {{ vendas|length }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Itens vendidos
+                        </h6>
+
+                        <h2 class="fw-bold">
+                            {{ total_quantidade }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Total vendido
+                        </h6>
+
+                        <h2 class="fw-bold">
+                            R$ {{ "%.2f"|format(total_vendas) }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABELA -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <h5 class="card-title mb-4">
+                    Vendas realizadas
+                </h5>
+
+                {% if vendas %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-dark">
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Comprador</th>
+
+                                <th>Anúncio</th>
+
+                                <th>Quantidade</th>
+
+                                <th>Valor</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for venda in vendas %}
+
+                            <tr>
+
+                                <td>
+                                    {{ venda.id }}
+                                </td>
+
+                                <td>
+                                    {{ venda.usuario.nome }}
+                                </td>
+
+                                <td>
+                                    {{ venda.anuncio.titulo }}
+                                </td>
+
+                                <td>
+                                    {{ venda.quantidade }}
+                                </td>
+
+                                <td>
+                                    R$ {{ "%.2f"|format(venda.valor) }}
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {% else %}
+
+                <div class="alert alert-info mb-0">
+                    Nenhuma venda foi registrada.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 

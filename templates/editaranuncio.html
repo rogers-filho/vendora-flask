@@ -1,107 +1,236 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Anúncio - Vendora</title>
-</head>
+{% block title %}
+Editar Anúncio - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Editar Anúncio</h1>
+<div class="mb-4">
 
-    <form action="{{ url_for('editaranuncio', id=anuncio.id) }}" method="POST">
+    <h1 class="fw-bold">
+        Editar Anúncio
+    </h1>
 
-        <label>Título:</label>
-        <input
-            type="text"
-            name="titulo"
-            value="{{ anuncio.titulo }}"
-            required
+    <p class="text-muted">
+        Altere as informações do anúncio cadastrado.
+    </p>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4 class="mb-0">
+            Dados do anúncio
+        </h4>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <form
+            action="{{ url_for('editaranuncio', id=anuncio.id) }}"
+            method="POST"
+            onsubmit="return confirm('Tem certeza que deseja salvar as alterações?');"
         >
 
-        <br><br>
+            <div class="row">
 
-        <label>Descrição:</label>
-        <textarea
-            name="descricao"
-            required
-        >{{ anuncio.descricao }}</textarea>
+                <!-- TÍTULO -->
 
-        <br><br>
+                <div class="col-12 mb-3">
 
-        <label>Preço:</label>
-        <input
-            type="number"
-            name="preco"
-            step="0.01"
-            value="{{ anuncio.preco }}"
-            required
-        >
+                    <label for="titulo" class="form-label">
+                        Título
+                    </label>
 
-        <br><br>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="titulo"
+                        name="titulo"
+                        value="{{ anuncio.titulo }}"
+                        required
+                    >
 
-        <label>Quantidade:</label>
-        <input
-            type="number"
-            name="quantidade"
-            value="{{ anuncio.quantidade }}"
-            required>
+                </div>
 
-        <br><br>
 
-        <label>Categoria:</label>
+                <!-- DESCRIÇÃO -->
 
-        <select name="cat_id" required>
+                <div class="col-12 mb-3">
 
-            {% for categoria in categorias %}
+                    <label for="descricao" class="form-label">
+                        Descrição
+                    </label>
 
-                <option
-                    value="{{ categoria.id }}"
-                    {% if anuncio.cat_id == categoria.id %}selected{% endif %}
+                    <textarea
+                        class="form-control"
+                        id="descricao"
+                        name="descricao"
+                        rows="5"
+                        required
+                    >{{ anuncio.descricao }}</textarea>
+
+                </div>
+
+
+                <!-- PREÇO -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="preco" class="form-label">
+                        Preço
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            R$
+                        </span>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="preco"
+                            name="preco"
+                            step="0.01"
+                            min="0"
+                            value="{{ anuncio.preco }}"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTIDADE -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="quantidade" class="form-label">
+                        Quantidade
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="quantidade"
+                        name="quantidade"
+                        min="1"
+                        value="{{ anuncio.quantidade }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORIA -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="cat_id" class="form-label">
+                        Categoria
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="cat_id"
+                        name="cat_id"
+                        required
+                    >
+
+                        {% for categoria in categorias %}
+
+                            <option
+                                value="{{ categoria.id }}"
+                                {% if anuncio.cat_id == categoria.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ categoria.nome }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- USUÁRIO -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="usu_id" class="form-label">
+                        Usuário
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="usu_id"
+                        name="usu_id"
+                        required
+                    >
+
+                        {% for usuario in usuarios %}
+
+                            <option
+                                value="{{ usuario.id }}"
+                                {% if anuncio.usu_id == usuario.id %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ usuario.nome }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÕES -->
+
+            <div class="d-flex gap-2 mt-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
                 >
-                    {{ categoria.nome }}
-                </option>
 
-            {% endfor %}
+                    Salvar alterações
 
-        </select>
-        <br><br>
+                </button>
 
-        <label>Usuário:</label>
 
-        <select name="usu_id" required>
-
-            {% for usuario in usuarios %}
-
-                <option
-                    value="{{ usuario.id }}"
-                    {% if anuncio.usu_id == usuario.id %}selected{% endif %}
+                <a
+                    href="{{ url_for('anuncio') }}"
+                    class="btn btn-secondary"
                 >
-                    {{ usuario.nome }}
-                </option>
 
-            {% endfor %}
+                    Voltar
 
-        </select>
+                </a>
 
-        <br><br>
+            </div>
 
-        <button
-            type="submit"
-            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
-        >
-            Salvar alterações
-        </button>
+        </form>
 
-    </form>
+    </div>
 
-    <br>
+</div>
 
-    <a href="{{ url_for('anuncio') }}">
-        Voltar para anúncios
-    </a>
-
-</body>
-
-</html>
+{% endblock %}

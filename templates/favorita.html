@@ -1,105 +1,262 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Favoritas - Vendora</title>
-</head>
+{% block title %}
+Favoritos - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Cadastro de Favorita</h1>
+<!-- CABEÇALHO -->
 
-    <form action="{{ url_for('criarfavorita') }}" method="POST">
+<div class="mb-4">
 
-        <label>Usuário:</label>
+    <h1 class="fw-bold">
+        Meus Favoritos
+    </h1>
 
-        <select name="usu_id" required>
+    <p class="text-muted">
+        Gerencie os anúncios adicionados aos favoritos.
+    </p>
 
-            <option value="">
-                Selecione um usuário
-            </option>
+</div>
 
-            {% for usuario in usuarios %}
 
-                <option value="{{ usuario.id }}">
-                    {{ usuario.nome }}
-                </option>
+<!-- FORMULÁRIO -->
 
-            {% endfor %}
+<div class="card shadow-sm mb-5">
 
-        </select>
+    <div class="card-header bg-primary text-white">
 
-        <br><br>
+        <h4 class="mb-0">
+            Adicionar aos favoritos
+        </h4>
 
-        <label>Anúncio:</label>
+    </div>
 
-        <select name="anu_id" required>
+    <div class="card-body">
 
-            <option value="">
-                Selecione um anúncio
-            </option>
+        <form
+            action="{{ url_for('criarfavorita') }}"
+            method="POST">
 
-            {% for anuncio in anuncios %}
+            <div class="row">
 
-                <option value="{{ anuncio.id }}">
-                    {{ anuncio.titulo }}
-                </option>
+                <!-- USUÁRIO -->
 
-            {% endfor %}
+                <div class="col-md-6 mb-3">
 
-        </select>
+                    <label for="usu_id" class="form-label">
+                        Usuário
+                    </label>
 
-        <br><br>
+                    <select
+                        class="form-select"
+                        id="usu_id"
+                        name="usu_id"
+                        required>
 
-        <button type="submit">
-            Cadastrar favorita
-        </button>
+                        <option value="">
+                            Selecione um usuário
+                        </option>
 
-    </form>
+                        {% for usuario in usuarios %}
 
-    <hr>
+                            <option value="{{ usuario.id }}">
+                                {{ usuario.nome }}
+                            </option>
 
-    <h2>Favoritas cadastradas</h2>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- ANÚNCIO -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="anu_id" class="form-label">
+                        Anúncio
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="anu_id"
+                        name="anu_id"
+                        required>
+
+                        <option value="">
+                            Selecione um anúncio
+                        </option>
+
+                        {% for anuncio in anuncios %}
+
+                            <option value="{{ anuncio.id }}">
+                                {{ anuncio.titulo }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <button
+                type="submit"
+                class="btn btn-success">
+
+                Adicionar aos favoritos
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- FAVORITOS CADASTRADOS -->
+
+<div class="mb-3">
+
+    <h2 class="fw-bold">
+        Favoritos cadastrados
+    </h2>
+
+    <p class="text-muted">
+        Anúncios salvos como favoritos.
+    </p>
+
+</div>
+
+
+<div class="row g-4">
 
     {% for favorita in favoritas %}
 
-        <p>
+    <div class="col-md-6 col-lg-4">
 
-            <strong>ID:</strong>
-            {{ favorita.id }}
+        <div class="card h-100 shadow-sm">
 
-            <br>
+            <div class="card-body">
 
-            <strong>Usuário:</strong>
-            {{ favorita.usuario.nome }}
+                <!-- CABEÇALHO -->
 
-            <br>
+                <div class="d-flex justify-content-between align-items-start mb-3">
 
-            <strong>Anúncio:</strong>
-            {{ favorita.anuncio.titulo }}
+                    <h5 class="card-title mb-0">
+                        Favorito
+                    </h5>
 
-            <br><br>
+                    <span class="badge bg-secondary">
+                        ID {{ favorita.id }}
+                    </span>
 
-            <a href="{{ url_for('editarfavorita', id=favorita.id) }}">
-                Editar
-            </a>
+                </div>
 
-            |
 
-            <a
-                href="{{ url_for('deletarfavorita', id=favorita.id) }}"
-                onclick="return confirm('Tem certeza que deseja excluir esta favorita?');"
-            >
-                Excluir
-            </a>
+                <!-- USUÁRIO -->
 
-        </p>
+                <p class="mb-3">
 
-        <hr>
+                    <strong>
+                        Usuário:
+                    </strong>
+
+                    {% if favorita.usuario %}
+
+                        {{ favorita.usuario.nome }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informado
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- ANÚNCIO -->
+
+                <p class="mb-0">
+
+                    <strong>
+                        Anúncio:
+                    </strong>
+
+                    {% if favorita.anuncio %}
+
+                        {{ favorita.anuncio.titulo }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informado
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="card-footer bg-white border-0 pb-3">
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{{ url_for('editarfavorita', id=favorita.id) }}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('deletarfavorita', id=favorita.id) }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Tem certeza que deseja excluir esta favorita?');">
+
+                        Excluir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Nenhum favorito cadastrado.
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

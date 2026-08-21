@@ -1,78 +1,156 @@
-<!doctype html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Vendora</title>
-</head>
+{% block title %}
+Home - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Vendora</h1>
+<div class="text-center mb-5">
 
-    <h3>Plataforma de compra e venda de produtos</h3>
+    <h1 class="display-4 fw-bold">
+        Vendora
+    </h1>
 
-    <hr>
-
-    <h3>Menu de Navegação</h3>
-
-    <h4>Principal</h4>
-
-    <p>
-        <a href="{{ url_for('index') }}">
-            Home
-        </a>
+    <p class="lead">
+        Plataforma de compra e venda de produtos
     </p>
 
-    <h4>Usuário</h4>
+</div>
 
-    <p>
-        <a href="{{ url_for('usuario') }}">
-            Cadastro
-        </a>
-    </p>
 
-    <h4>Anúncios</h4>
+<div class="row g-4">
 
-    <p>
-        <a href="{{ url_for('anuncio') }}">
-            Anúncios
-        </a>
-    </p>
 
-    <p>
-        <a href="{{ url_for('categoria') }}">
-            Categorias
-        </a>
-    </p>
+    <!-- ANÚNCIOS -->
+     
+    <div class="col-md-4">
 
-    <h4>Interação</h4>
+        <div class="card h-100 shadow-sm">
 
-    <p>
-        <a href="{{ url_for('pergunta') }}">
-            Perguntas
-        </a>
-    </p>
+            <div class="card-body text-center">
 
-    <p>
-        <a href="{{ url_for('resposta') }}">
-            Respostas
-        </a>
-    </p>
+                <h5 class="card-title">
+                    Anúncios
+                </h5>
 
-    <p>
-        <a href="{{ url_for('favorita') }}">
-            Meus Favoritos
-        </a>
-    </p>
+                <p class="card-text">
+                    Consulte os produtos disponíveis para compra.
+                </p>
 
-    <h4>Compras</h4>
+                <a href="{{ url_for('anuncio') }}"
+                   class="btn btn-primary">
 
-    <p>
-        <a href="{{ url_for('compra') }}">
-            Compras
-        </a>
-    </p>
+                    Ver anúncios
 
-</body>
+                </a>
 
-</html>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% if current_user.is_authenticated %}
+
+
+    <!-- CATEGORIAS -->
+
+    <div class="col-md-4">
+
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h5 class="card-title">
+                    Categorias
+                </h5>
+
+                <p class="card-text">
+                    Gerencie as categorias dos produtos.
+                </p>
+
+                <a href="{{ url_for('categoria') }}"
+                   class="btn btn-primary">
+
+                    Acessar categorias
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPRAS -->
+
+    <div class="col-md-4">
+
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h5 class="card-title">
+                    Compras
+                </h5>
+
+                <p class="card-text">
+                    Consulte e gerencie suas compras.
+                </p>
+
+                <a href="{{ url_for('compra') }}"
+                   class="btn btn-primary">
+
+                    Minhas compras
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- LOGIN -->
+
+    <div class="col-md-4">
+
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h5 class="card-title">
+                    Acesse sua conta
+                </h5>
+
+                <p class="card-text">
+                    Faça login para acessar
+                    todas as funcionalidades.
+                </p>
+
+                <a href="{{ url_for('login') }}"
+                   class="btn btn-success">
+
+                    Entrar
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

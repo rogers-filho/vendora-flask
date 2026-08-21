@@ -1,133 +1,388 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Anúncios - Vendora</title>
-</head>
+{% block title %}
+Anúncios - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Cadastro de Anúncio</h1>
+<!-- CABEÇALHO -->
 
-    <form action="{{ url_for('criaranuncio') }}" method="POST">
+<div class="mb-4">
 
-        <label>Título:</label>
-        <input type="text" name="titulo" required>
+    <h1 class="fw-bold">
+        Cadastro de Anúncio
+    </h1>
 
-        <br><br>
+    <p class="text-muted">
+        Cadastre produtos para venda e gerencie os anúncios da plataforma.
+    </p>
 
-        <label>Descrição:</label>
-        <textarea name="descricao" required></textarea>
+</div>
 
-        <br><br>
 
-        <label>Preço:</label>
-        <input type="number" name="preco" step="0.01" required>
+<!-- FORMULÁRIO DE CADASTRO -->
 
-        <br><br>
+<div class="card shadow-sm mb-5">
 
-        <label>Quantidade:</label>
-        <input type="number" name="quantidade" required>
+    <div class="card-header bg-primary text-white">
 
-        <br><br>
+        <h4 class="mb-0">
+            Novo anúncio
+        </h4>
 
-        <label>Usuário:</label>
+    </div>
 
-        <select name="usu_id" required>
+    <div class="card-body">
 
-            <option value="">Selecione um usuário</option>
+        <form
+            action="{{ url_for('criaranuncio') }}"
+            method="POST">
 
-            {% for usuario in usuarios %}
+            <div class="row">
 
-                <option value="{{ usuario.id }}">
-                    {{ usuario.nome }}
-                </option>
+                <!-- TÍTULO -->
 
-            {% endfor %}
+                <div class="col-md-8 mb-3">
 
-        </select>
+                    <label for="titulo" class="form-label">
+                        Título
+                    </label>
 
-        <br><br>
-        <button type="submit">
-            Cadastrar anúncio
-        </button>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="titulo"
+                        name="titulo"
+                        placeholder="Título do anúncio"
+                        required
+                    >
 
-    </form>
+                </div>
 
-    <hr>
 
-    <h2>Anúncios cadastrados</h2>
+                <!-- PREÇO -->
+
+                <div class="col-md-4 mb-3">
+
+                    <label for="preco" class="form-label">
+                        Preço
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            R$
+                        </span>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="preco"
+                            name="preco"
+                            step="0.01"
+                            min="0"
+                            placeholder="0,00"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIÇÃO -->
+
+                <div class="col-12 mb-3">
+
+                    <label for="descricao" class="form-label">
+                        Descrição
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        id="descricao"
+                        name="descricao"
+                        rows="4"
+                        placeholder="Descreva o produto..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- QUANTIDADE -->
+
+                <div class="col-md-4 mb-3">
+
+                    <label for="quantidade" class="form-label">
+                        Quantidade
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="quantidade"
+                        name="quantidade"
+                        min="1"
+                        placeholder="Quantidade disponível"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORIA -->
+
+                <div class="col-md-4 mb-3">
+
+                    <label for="cat_id" class="form-label">
+                        Categoria
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="cat_id"
+                        name="cat_id"
+                        required>
+
+                        <option value="">
+                            Selecione uma categoria
+                        </option>
+
+                        {% for categoria in categorias %}
+
+                            <option value="{{ categoria.id }}">
+                                {{ categoria.nome }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- USUÁRIO -->
+
+                <div class="col-md-4 mb-3">
+
+                    <label for="usu_id" class="form-label">
+                        Usuário
+                    </label>
+
+                    <select
+                        class="form-select"
+                        id="usu_id"
+                        name="usu_id"
+                        required>
+
+                        <option value="">
+                            Selecione um usuário
+                        </option>
+
+                        {% for usuario in usuarios %}
+
+                            <option value="{{ usuario.id }}">
+                                {{ usuario.nome }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <div class="mt-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Cadastrar anúncio
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ANÚNCIOS CADASTRADOS -->
+
+<div class="mb-3">
+
+    <h2 class="fw-bold">
+        Anúncios cadastrados
+    </h2>
+
+    <p class="text-muted">
+        Produtos atualmente cadastrados na plataforma.
+    </p>
+
+</div>
+
+
+<div class="row g-4">
 
     {% for anuncio in anuncios %}
 
-        <p>
-            <strong>ID:</strong> {{ anuncio.id }}
-            <br>
+    <div class="col-md-6 col-lg-4">
 
-            <strong>Título:</strong> {{ anuncio.titulo }}
-            <br>
+        <div class="card h-100 shadow-sm">
 
-            <strong>Descrição:</strong> {{ anuncio.descricao }}
-            <br>
+            <div class="card-body">
 
-            <strong>Preço:</strong> R$ {{ anuncio.preco }}
-            <br>
+                <!-- ID -->
 
-            <strong>Quantidade:</strong> {{ anuncio.quantidade }}
-            <br><br>
+                <div class="d-flex justify-content-between align-items-start mb-2">
 
-            <br><br>
+                    <h5 class="card-title mb-0">
+                        {{ anuncio.titulo }}
+                    </h5>
 
-            <label>Categoria:</label>
+                    <span class="badge bg-secondary">
+                        ID {{ anuncio.id }}
+                    </span>
 
-            <select name="cat_id" required>
+                </div>
 
-                <option value="">Selecione uma categoria</option>
 
-                {% for categoria in categorias %}
+                <!-- DESCRIÇÃO -->
 
-                    <option value="{{ categoria.id }}">
-                        {{ categoria.nome }}
-                    </option>
+                <p class="card-text text-muted">
 
-                {% endfor %}
+                    {{ anuncio.descricao }}
 
-            </select>
+                </p>
 
-           <br><br>
 
-            <label>Usuário:</label>
+                <!-- PREÇO -->
 
-            <select name="usu_id" required>
+                <h4 class="text-success fw-bold">
 
-                <option value="">Selecione um usuário</option>
+                    R$ {{ "%.2f"|format(anuncio.preco) }}
 
-                {% for usuario in usuarios %}
+                </h4>
 
-                    <option value="{{ usuario.id }}">
-                        {{ usuario.nome }}
-                    </option>
 
-                {% endfor %}
+                <!-- QUANTIDADE -->
 
-            </select>
-            <br><br>
+                <p class="mb-2">
 
-            <a href="{{ url_for('editaranuncio', id=anuncio.id) }}">
-                Editar
-            </a>
+                    <strong>
+                        Quantidade:
+                    </strong>
 
-            <a href="{{ url_for('deletaranuncio', id=anuncio.id) }}"
-               onclick="return confirm('Tem certeza que deseja excluir este anúncio?');">
-                Excluir
-            </a>
-        </p>
+                    {{ anuncio.quantidade }}
 
-        <hr>
+                </p>
+
+
+                <!-- CATEGORIA -->
+
+                <p class="mb-2">
+
+                    <strong>
+                        Categoria:
+                    </strong>
+
+                    {% if anuncio.categoria %}
+
+                        {{ anuncio.categoria.nome }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informada
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <!-- USUÁRIO -->
+
+                <p class="mb-0">
+
+                    <strong>
+                        Anunciante:
+                    </strong>
+
+                    {% if anuncio.usuario %}
+
+                        {{ anuncio.usuario.nome }}
+
+                    {% else %}
+
+                        <span class="text-muted">
+                            Não informado
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="card-footer bg-white border-0 pb-3">
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{{ url_for('editaranuncio', id=anuncio.id) }}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('deletaranuncio', id=anuncio.id) }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Tem certeza que deseja excluir este anúncio?');">
+
+                        Excluir
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Nenhum anúncio cadastrado.
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}

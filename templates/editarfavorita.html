@@ -1,77 +1,106 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Favorita - Vendora</title>
-</head>
+{% block title %}
+Editar Favorita - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Editar Favorita</h1>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
 
-    <form
-        action="{{ url_for('editarfavorita', id=favorita.id) }}"
-        method="POST"
-    >
+        <div class="card shadow-sm">
 
-        <label>Usuário:</label>
+            <div class="card-header bg-primary text-white">
+                <h1 class="h4 mb-0">
+                    Editar Favorita
+                </h1>
+            </div>
 
-        <select name="usu_id" required>
+            <div class="card-body">
 
-            {% for usuario in usuarios %}
-
-                <option
-                    value="{{ usuario.id }}"
-                    {% if favorita.usu_id == usuario.id %}
-                        selected
-                    {% endif %}
+                <form
+                    action="{{ url_for('editarfavorita', id=favorita.id) }}"
+                    method="POST"
                 >
-                    {{ usuario.nome }}
-                </option>
 
-            {% endfor %}
+                    <div class="mb-3">
+                        <label for="usu_id" class="form-label">
+                            Usuário
+                        </label>
 
-        </select>
+                        <select
+                            class="form-select"
+                            id="usu_id"
+                            name="usu_id"
+                            required
+                        >
+                            {% for usuario in usuarios %}
 
-        <br><br>
+                                <option
+                                    value="{{ usuario.id }}"
+                                    {% if favorita.usu_id == usuario.id %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ usuario.nome }}
+                                </option>
 
-        <label>Anúncio:</label>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        <select name="anu_id" required>
+                    <div class="mb-4">
+                        <label for="anu_id" class="form-label">
+                            Anúncio
+                        </label>
 
-            {% for anuncio in anuncios %}
+                        <select
+                            class="form-select"
+                            id="anu_id"
+                            name="anu_id"
+                            required
+                        >
+                            {% for anuncio in anuncios %}
 
-                <option
-                    value="{{ anuncio.id }}"
-                    {% if favorita.anu_id == anuncio.id %}
-                        selected
-                    {% endif %}
-                >
-                    {{ anuncio.titulo }}
-                </option>
+                                <option
+                                    value="{{ anuncio.id }}"
+                                    {% if favorita.anu_id == anuncio.id %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ anuncio.titulo }}
+                                </option>
 
-            {% endfor %}
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        </select>
+                    <div class="d-flex gap-2">
 
-        <br><br>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
+                        >
+                            Salvar alterações
+                        </button>
 
-        <button
-            type="submit"
-            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
-        >
-            Salvar alterações
-        </button>
+                        <a
+                            href="{{ url_for('favorita') }}"
+                            class="btn btn-secondary"
+                        >
+                            Voltar
+                        </a>
 
-    </form>
+                    </div>
 
-    <br>
+                </form>
 
-    <a href="{{ url_for('favorita') }}">
-        Voltar para favoritas
-    </a>
+            </div>
+        </div>
 
-</body>
+    </div>
+</div>
 
-</html>
+{% endblock %}

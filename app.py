@@ -5,15 +5,22 @@ from flask import redirect
 from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = "chave-secreta-vendora"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://testuser:123456@localhost:3306/Vendora'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class Usuario(db.Model):
+class Usuario(UserMixin, db.Model):
     __tablename__ = "usuario"
 
     id = db.Column("usu_id", db.Integer, primary_key=True)
@@ -26,8 +33,94 @@ class Usuario(db.Model):
         self.email = email
         self.senha = senha
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        email = request.form.get("email")
+        senha = request.form.get("senha")
+
+        usuario = Usuario.query.filter_by(email=email).first()
+
+        if usuario and check_password_hash(usuario.senha, senha):
+            login_user(usuario)
+            return redirect(url_for("index"))
+
+        return render_template(
+            "login.html",
+            erro="E-mail ou senha inválidos."
+        )
+
+    return render_template("login.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
+
+# PERFIL DO USUÁRIO
+
+@app.route("/perfil", methods=["GET", "POST"])
+@login_required
+def perfil():
+
+    usuario = Usuario.query.get(current_user.id)
+
+    if not usuario:
+        abort(404)
+
+    endereco = Endereco.query.filter_by(
+        usu_id=usuario.id
+    ).first()
+
+    if request.method == "POST":
+
+        usuario.nome = request.form.get("nome")
+        usuario.email = request.form.get("email")
+
+        senha = request.form.get("senha")
+
+        if senha:
+            usuario.senha = generate_password_hash(senha)
+
+        if endereco:
+
+            endereco.rua = request.form.get("rua")
+            endereco.numero = request.form.get("numero")
+            endereco.bairro = request.form.get("bairro")
+            endereco.cidade = request.form.get("cidade")
+            endereco.cep = request.form.get("cep")
+
+        else:
+
+            endereco = Endereco(
+                request.form.get("rua"),
+                request.form.get("numero"),
+                request.form.get("bairro"),
+                request.form.get("cidade"),
+                request.form.get("cep"),
+                usuario.id
+            )
+
+            db.session.add(endereco)
+
+        db.session.commit()
+
+        return redirect(url_for("perfil"))
+
+    return render_template(
+        "perfil.html",
+        usuario=usuario,
+        endereco=endereco
+    )
+
 #Home/Index
-# Home/Index
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -44,8 +137,10 @@ def usuario():
         enderecos=enderecos
     )
 
+
 @app.route("/usuario/criar", methods=["POST"])
 def criarusuario():
+
     nome = request.form.get("nome")
     email = request.form.get("email")
     senha = request.form.get("senha")
@@ -56,7 +151,13 @@ def criarusuario():
     cidade = request.form.get("cidade")
     cep = request.form.get("cep")
 
-    usuario = Usuario(nome, email, senha)
+    senha_hash = generate_password_hash(senha)
+
+    usuario = Usuario(
+        nome,
+        email,
+        senha_hash
+    )
 
     db.session.add(usuario)
     db.session.commit()
@@ -77,6 +178,7 @@ def criarusuario():
 
 #Editar Usuário
 @app.route("/usuario/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editarusuario(id):
     usuario = Usuario.query.get(id)
 
@@ -122,6 +224,7 @@ def editarusuario(id):
 
 #Excluir Usuário
 @app.route("/usuario/deletar/<int:id>")
+@login_required
 def deletarusuario(id):
 
     usuario = Usuario.query.get(id)
@@ -176,6 +279,7 @@ class Categoria(db.Model):
         self.descricao = descricao
 
 @app.route("/cad/categoria")
+@login_required
 def categoria():
 
     categorias = Categoria.query.all()
@@ -186,6 +290,7 @@ def categoria():
     )
 
 @app.route("/categoria/criar", methods=["POST"])
+@login_required
 def criarcategoria():
 
     nome = request.form.get("nome")
@@ -202,6 +307,7 @@ def criarcategoria():
     return redirect(url_for("categoria"))
 
 @app.route("/categoria/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editarcategoria(id):
 
     categoria = Categoria.query.get(id)
@@ -224,6 +330,7 @@ def editarcategoria(id):
     )       
  
 @app.route("/categoria/deletar/<int:id>")
+@login_required
 def deletarcategoria(id):
 
     categoria = Categoria.query.get(id)
@@ -280,6 +387,7 @@ class Anuncio(db.Model):
         self.cat_id = cat_id
 
 @app.route("/cad/anuncio")
+@login_required
 def anuncio():
 
     anuncios = Anuncio.query.all()
@@ -294,6 +402,7 @@ def anuncio():
     )
 
 @app.route("/anuncio/criar", methods=["POST"])
+@login_required
 def criaranuncio():
 
     titulo = request.form.get("titulo")
@@ -318,6 +427,7 @@ def criaranuncio():
     return redirect(url_for("anuncio"))
 
 @app.route("/anuncio/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editaranuncio(id):
 
     anuncio = Anuncio.query.get(id)
@@ -349,6 +459,7 @@ def editaranuncio(id):
     )
 
 @app.route("/anuncio/deletar/<int:id>")
+@login_required
 def deletaranuncio(id):
     anuncio = Anuncio.query.get(id)
 
@@ -389,6 +500,7 @@ class Pergunta(db.Model):
         self.anu_id = anu_id
 
 @app.route("/cad/pergunta")
+@login_required
 def pergunta():
 
     perguntas = Pergunta.query.all()
@@ -403,6 +515,7 @@ def pergunta():
     )
 
 @app.route("/pergunta/criar", methods=["POST"])
+@login_required
 def criarpergunta():
 
     texto = request.form.get("texto")
@@ -421,6 +534,7 @@ def criarpergunta():
     return redirect(url_for("pergunta"))
 
 @app.route("/pergunta/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editarpergunta(id):
 
     pergunta = Pergunta.query.get(id)
@@ -449,6 +563,7 @@ def editarpergunta(id):
     )
 
 @app.route("/pergunta/deletar/<int:id>")
+@login_required
 def deletarpergunta(id):
 
     pergunta = Pergunta.query.get(id)
@@ -492,6 +607,7 @@ class Resposta(db.Model):
         self.per_id = per_id
 
 @app.route("/cad/resposta")
+@login_required
 def resposta():
 
     respostas = Resposta.query.all()
@@ -506,6 +622,7 @@ def resposta():
     )
 
 @app.route("/resposta/criar", methods=["POST"])
+@login_required
 def criarresposta():
 
     texto = request.form.get("texto")
@@ -524,6 +641,7 @@ def criarresposta():
     return redirect(url_for("resposta"))
 
 @app.route("/resposta/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editarresposta(id):
 
     resposta = Resposta.query.get(id)
@@ -552,6 +670,7 @@ def editarresposta(id):
     )
 
 @app.route("/resposta/deletar/<int:id>")
+@login_required
 def deletarresposta(id):
 
     resposta = Resposta.query.get(id)
@@ -596,6 +715,7 @@ class Compra(db.Model):
         self.anu_id = anu_id
 
 @app.route("/cad/compra")
+@login_required
 def compra():
 
     compras = Compra.query.all()
@@ -610,6 +730,7 @@ def compra():
     )
 
 @app.route("/compra/criar", methods=["POST"])
+@login_required
 def criarcompra():
 
     quantidade = request.form.get("quantidade")
@@ -630,6 +751,7 @@ def criarcompra():
     return redirect(url_for("compra"))
 
 @app.route("/compra/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editarcompra(id):
 
     compra = Compra.query.get(id)
@@ -659,6 +781,7 @@ def editarcompra(id):
     )
 
 @app.route("/compra/deletar/<int:id>")
+@login_required
 def deletarcompra(id):
 
     compra = Compra.query.get(id)
@@ -699,6 +822,7 @@ class Favorita(db.Model):
         self.anu_id = anu_id
 
 @app.route("/cad/favorita")
+@login_required
 def favorita():
 
     favoritas = Favorita.query.all()
@@ -713,6 +837,7 @@ def favorita():
     )
 
 @app.route("/favorita/criar", methods=["POST"])
+@login_required
 def criarfavorita():
 
     usu_id = request.form.get("usu_id")
@@ -729,6 +854,7 @@ def criarfavorita():
     return redirect(url_for("favorita"))
 
 @app.route("/favorita/editar/<int:id>", methods=["GET", "POST"])
+@login_required
 def editarfavorita(id):
 
     favorita = Favorita.query.get(id)
@@ -756,6 +882,7 @@ def editarfavorita(id):
     )
 
 @app.route("/favorita/deletar/<int:id>")
+@login_required
 def deletarfavorita(id):
 
     favorita = Favorita.query.get(id)
@@ -769,6 +896,65 @@ def deletarfavorita(id):
         db.session.commit()
 
     return redirect(url_for("favorita"))
+
+# RELATÓRIOS
+
+@app.route("/relatorios")
+@login_required
+def relatorios():
+
+    return render_template("relatorios.html")
+
+
+@app.route("/relatorios/compras")
+@login_required
+def relcompras():
+
+    compras = Compra.query.filter_by(
+        usu_id=current_user.id
+    ).all()
+
+    total_quantidade = sum(
+        compra.quantidade for compra in compras
+    )
+
+    total_compras = sum(
+        compra.valor for compra in compras
+    )
+
+    return render_template(
+        "relcompras.html",
+        compras=compras,
+        total_quantidade=total_quantidade,
+        total_compras=total_compras
+    )
+
+
+@app.route("/relatorios/vendas")
+@login_required
+def relvendas():
+
+    vendas = Compra.query.join(
+        Anuncio,
+        Compra.anu_id == Anuncio.id
+    ).filter(
+        Anuncio.usu_id == current_user.id
+    ).all()
+
+    total_quantidade = sum(
+        venda.quantidade for venda in vendas
+    )
+
+    total_vendas = sum(
+        venda.valor for venda in vendas
+    )
+
+    return render_template(
+        "relvendas.html",
+        vendas=vendas,
+        total_quantidade=total_quantidade,
+        total_vendas=total_vendas
+    )
 
 # Tratamento de erros de página ou requisição
 

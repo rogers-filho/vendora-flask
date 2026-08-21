@@ -1,105 +1,183 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Usuário - Vendora</title>
-</head>
+{% block title %}
+Editar Usuário - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Editar Usuário</h1>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
 
-    <form action="{{ url_for('editarusuario', id=usuario.id) }}" method="POST">
+        <div class="card shadow-sm">
 
-        <label>Nome:</label>
-        <input
-            type="text"
-            name="nome"
-            value="{{ usuario.nome }}"
-            required
-        >
+            <div class="card-header bg-primary text-white">
+                <h1 class="h4 mb-0">
+                    Editar Usuário
+                </h1>
+            </div>
 
-        <br><br>
+            <div class="card-body">
 
-        <label>E-mail:</label>
-        <input
-            type="email"
-            name="email"
-            value="{{ usuario.email }}"
-            required
-        >
+                <form
+                    action="{{ url_for('editarusuario', id=usuario.id) }}"
+                    method="POST"
+                >
 
-        <br><br>
+                    <!-- Dados do usuário -->
+                    <h2 class="h5 mb-3">
+                        Dados do usuário
+                    </h2>
 
-        <label>Senha:</label>
-        <input
-            type="password"
-            name="senha"
-            value="{{ usuario.senha }}"
-            required
-        >
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">
+                            Nome
+                        </label>
 
-        <br><br>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="nome"
+                            name="nome"
+                            value="{{ usuario.nome }}"
+                            required
+                        >
+                    </div>
 
-        <h2>Endereço</h2>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            E-mail
+                        </label>
 
-        <label>Rua:</label>
-        <input
-            type="text"
-            name="rua"
-            value="{{ endereco.rua if endereco else '' }}"
-        >
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            value="{{ usuario.email }}"
+                            required
+                        >
+                    </div>
 
-        <br><br>
+                    <div class="mb-4">
+                        <label for="senha" class="form-label">
+                            Senha
+                        </label>
 
-        <label>Número:</label>
-        <input
-            type="text"
-            name="numero"
-            value="{{ endereco.numero if endereco else '' }}"
-        >
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="senha"
+                            name="senha"
+                            value="{{ usuario.senha }}"
+                            required
+                        >
+                    </div>
 
-        <br><br>
+                    <hr>
 
-        <label>Bairro:</label>
-        <input
-            type="text"
-            name="bairro"
-            value="{{ endereco.bairro if endereco else '' }}"
-        >
+                    <!-- Endereço -->
+                    <h2 class="h5 mb-3">
+                        Endereço
+                    </h2>
 
-        <br><br>
+                    <div class="mb-3">
+                        <label for="rua" class="form-label">
+                            Rua
+                        </label>
 
-        <label>Cidade:</label>
-        <input
-            type="text"
-            name="cidade"
-            value="{{ endereco.cidade if endereco else '' }}"
-        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="rua"
+                            name="rua"
+                            value="{{ endereco.rua if endereco else '' }}"
+                        >
+                    </div>
 
-        <br><br>
+                    <div class="mb-3">
+                        <label for="numero" class="form-label">
+                            Número
+                        </label>
 
-        <label>CEP:</label>
-        <input
-            type="text"
-            name="cep"
-            value="{{ endereco.cep if endereco else '' }}"
-        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="numero"
+                            name="numero"
+                            value="{{ endereco.numero if endereco else '' }}"
+                        >
+                    </div>
 
-        <br><br>
+                    <div class="mb-3">
+                        <label for="bairro" class="form-label">
+                            Bairro
+                        </label>
 
-        <button type="submit" onclick="return confirm('Tem certeza que deseja salvar as alterações?');"> Salvar alterações</button>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="bairro"
+                            name="bairro"
+                            value="{{ endereco.bairro if endereco else '' }}"
+                        >
+                    </div>
 
-    </form>
+                    <div class="mb-3">
+                        <label for="cidade" class="form-label">
+                            Cidade
+                        </label>
 
-    <br>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="cidade"
+                            name="cidade"
+                            value="{{ endereco.cidade if endereco else '' }}"
+                        >
+                    </div>
 
-    <a href="{{ url_for('usuario') }}" onclick="return confirm('Tem certeza que deseja cancelar as alterações?');"><button type="button">Cancelar</button></a>
-        
-    </a>
+                    <div class="mb-4">
+                        <label for="cep" class="form-label">
+                            CEP
+                        </label>
 
-    
-</body>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="cep"
+                            name="cep"
+                            value="{{ endereco.cep if endereco else '' }}"
+                        >
+                    </div>
 
-</html>
+                    <!-- Botões -->
+                    <div class="d-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
+                        >
+                            Salvar alterações
+                        </button>
+
+                        <a
+                            href="{{ url_for('usuario') }}"
+                            class="btn btn-secondary"
+                            onclick="return confirm('Tem certeza que deseja cancelar as alterações?');"
+                        >
+                            Cancelar
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

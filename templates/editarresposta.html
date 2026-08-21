@@ -1,86 +1,120 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Resposta - Vendora</title>
-</head>
+{% block title %}
+Editar Resposta - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Editar Resposta</h1>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
 
-    <form
-        action="{{ url_for('editarresposta', id=resposta.id) }}"
-        method="POST"
-    >
+        <div class="card shadow-sm">
 
-        <label>Resposta:</label>
+            <div class="card-header bg-primary text-white">
+                <h1 class="h4 mb-0">
+                    Editar Resposta
+                </h1>
+            </div>
 
-        <textarea
-            name="texto"
-            required
-        >{{ resposta.texto }}</textarea>
+            <div class="card-body">
 
-        <br><br>
-
-        <label>Usuário:</label>
-
-        <select name="usu_id" required>
-
-            {% for usuario in usuarios %}
-
-                <option
-                    value="{{ usuario.id }}"
-                    {% if resposta.usu_id == usuario.id %}
-                        selected
-                    {% endif %}
+                <form
+                    action="{{ url_for('editarresposta', id=resposta.id) }}"
+                    method="POST"
                 >
-                    {{ usuario.nome }}
-                </option>
 
-            {% endfor %}
+                    <div class="mb-3">
+                        <label for="texto" class="form-label">
+                            Resposta
+                        </label>
 
-        </select>
+                        <textarea
+                            class="form-control"
+                            id="texto"
+                            name="texto"
+                            rows="4"
+                            required
+                        >{{ resposta.texto }}</textarea>
+                    </div>
 
-        <br><br>
+                    <div class="mb-3">
+                        <label for="usu_id" class="form-label">
+                            Usuário
+                        </label>
 
-        <label>Pergunta:</label>
+                        <select
+                            class="form-select"
+                            id="usu_id"
+                            name="usu_id"
+                            required
+                        >
+                            {% for usuario in usuarios %}
 
-        <select name="per_id" required>
+                                <option
+                                    value="{{ usuario.id }}"
+                                    {% if resposta.usu_id == usuario.id %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ usuario.nome }}
+                                </option>
 
-            {% for pergunta in perguntas %}
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                <option
-                    value="{{ pergunta.id }}"
-                    {% if resposta.per_id == pergunta.id %}
-                        selected
-                    {% endif %}
-                >
-                    {{ pergunta.texto }}
-                </option>
+                    <div class="mb-4">
+                        <label for="per_id" class="form-label">
+                            Pergunta
+                        </label>
 
-            {% endfor %}
+                        <select
+                            class="form-select"
+                            id="per_id"
+                            name="per_id"
+                            required
+                        >
+                            {% for pergunta in perguntas %}
 
-        </select>
+                                <option
+                                    value="{{ pergunta.id }}"
+                                    {% if resposta.per_id == pergunta.id %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ pergunta.texto }}
+                                </option>
 
-        <br><br>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        <button
-            type="submit"
-            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
-        >
-            Salvar alterações
-        </button>
+                    <div class="d-flex gap-2">
 
-    </form>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            onclick="return confirm('Tem certeza que deseja salvar as alterações?');"
+                        >
+                            Salvar alterações
+                        </button>
 
-    <br>
+                        <a
+                            href="{{ url_for('resposta') }}"
+                            class="btn btn-secondary"
+                        >
+                            Voltar
+                        </a>
 
-    <a href="{{ url_for('resposta') }}">
-        Voltar para respostas
-    </a>
+                    </div>
 
-</body>
+                </form>
 
-</html>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

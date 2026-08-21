@@ -1,99 +1,364 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Usuários - Vendora</title>
-</head>
+{% block title %}
+Usuários - Vendora
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Cadastro de Usuário</h1>
+<!-- TÍTULO -->
 
-    <form action="{{ url_for('criarusuario') }}" method="POST">
+<div class="mb-4">
 
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
+    <h1 class="fw-bold">
+        Cadastro de Usuário
+    </h1>
 
-        <br><br>
+    <p class="text-muted">
+        Cadastre novos usuários e gerencie os usuários existentes.
+    </p>
 
-        <label>E-mail:</label>
-        <input type="email" name="email" required>
+</div>
 
-        <br><br>
 
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
+<!-- FORMULÁRIO DE CADASTRO -->
 
-        <br>
-       <h2>Endereço</h2>
-            <label>Rua:</label>
-            <input type="text" name="rua">
-            <br><br>
-            <label>Número:</label>
-            <input type="text" name="numero">
-            <br><br>
-            <label>Bairro:</label>
-            <input type="text" name="bairro">
-            <br><br>
-            <label>Cidade:</label>
-            <input type="text" name="cidade">
-            <br><br>
-            <label>CEP:</label>
-            <input type="text" name="cep">
-            <br><br>
-        <br>
+<div class="card shadow-sm mb-5">
 
-        <button type="submit">Cadastrar</button>
+    <div class="card-header bg-primary text-white">
 
-    </form>
+        <h4 class="mb-0">
+            Novo usuário
+        </h4>
 
-    <hr>
+    </div>
 
-    <h2>Usuários cadastrados</h2>
+    <div class="card-body">
+
+        <form action="{{ url_for('criarusuario') }}" method="POST">
+
+            <!-- DADOS DO USUÁRIO -->
+
+            <h5 class="mb-3">
+                Dados pessoais
+            </h5>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="nome" class="form-label">
+                        Nome
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="nome"
+                        name="nome"
+                        placeholder="Digite o nome"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="email" class="form-label">
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Digite o e-mail"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="senha" class="form-label">
+                        Senha
+                    </label>
+
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="senha"
+                        name="senha"
+                        placeholder="Digite a senha"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4">
+
+
+            <!-- ENDEREÇO -->
+
+            <h5 class="mb-3">
+                Endereço
+            </h5>
+
+            <div class="row">
+
+                <div class="col-md-8 mb-3">
+
+                    <label for="rua" class="form-label">
+                        Rua
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="rua"
+                        name="rua"
+                        placeholder="Nome da rua"
+                    >
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label for="numero" class="form-label">
+                        Número
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="numero"
+                        name="numero"
+                        placeholder="Número"
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="bairro" class="form-label">
+                        Bairro
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="bairro"
+                        name="bairro"
+                        placeholder="Bairro"
+                    >
+
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+
+                    <label for="cidade" class="form-label">
+                        Cidade
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cidade"
+                        name="cidade"
+                        placeholder="Cidade"
+                    >
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label for="cep" class="form-label">
+                        CEP
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cep"
+                        name="cep"
+                        placeholder="00000-000"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO -->
+
+            <div class="mt-3">
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Cadastrar usuário
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- USUÁRIOS CADASTRADOS -->
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+            Usuários cadastrados
+        </h2>
+
+        <p class="text-muted mb-0">
+            Usuários registrados na plataforma.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="row g-4">
 
     {% for usuario in usuarios %}
 
-        <p>
-            <strong>ID:</strong> {{ usuario.id }}
-            <br>
+    <div class="col-md-6 col-lg-4">
 
-            <strong>Nome:</strong> {{ usuario.nome }}
-            <br>
+        <div class="card h-100 shadow-sm">
 
-            <strong>E-mail:</strong> {{ usuario.email }}
-            <br>
+            <div class="card-body">
 
-            <h4>Endereço</h4>
+                <h5 class="card-title">
+                    {{ usuario.nome }}
+                </h5>
 
-            {% for endereco in enderecos %}
+                <p class="text-muted mb-3">
+                    ID: {{ usuario.id }}
+                </p>
 
-                {% if endereco.usu_id == usuario.id %}
 
-                    <p>Rua: {{ endereco.rua }}</p>
-                    <p>Número: {{ endereco.numero }}</p>
-                    <p>Bairro: {{ endereco.bairro }}</p>
-                    <p>Cidade: {{ endereco.cidade }}</p>
-                    <p>CEP: {{ endereco.cep }}</p>
+                <div class="mb-3">
 
-                {% endif %}
+                    <p class="mb-1">
+                        <strong>E-mail:</strong>
+                    </p>
 
-            {% endfor %}
-            <br>
+                    <p class="text-muted">
+                        {{ usuario.email }}
+                    </p>
 
-            
-            <a href="{{ url_for('editarusuario', id=usuario.id) }}">
-                <button type="button">Editar</button></a>
+                </div>
 
-            <a href="{{ url_for('deletarusuario', id=usuario.id) }}"
-            onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
-            <button type="button">Deletar</button></a>
-        </p>
 
-        <hr>
+                <!-- ENDEREÇO DO USUÁRIO -->
+
+                <h6 class="fw-bold">
+                    Endereço
+                </h6>
+
+                {% for endereco in enderecos %}
+
+                    {% if endereco.usu_id == usuario.id %}
+
+                        <p class="mb-1">
+                            <strong>Rua:</strong>
+                            {{ endereco.rua }}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Número:</strong>
+                            {{ endereco.numero }}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Bairro:</strong>
+                            {{ endereco.bairro }}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Cidade:</strong>
+                            {{ endereco.cidade }}
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>CEP:</strong>
+                            {{ endereco.cep }}
+                        </p>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- AÇÕES -->
+
+            <div class="card-footer bg-white border-0 pb-3">
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{{ url_for('editarusuario', id=usuario.id) }}"
+                        class="btn btn-warning btn-sm">
+
+                        Editar
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('deletarusuario', id=usuario.id) }}"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Tem certeza que deseja excluir este usuário?');">
+
+                        Deletar
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="col-12">
+
+        <div class="alert alert-info">
+
+            Nenhum usuário cadastrado.
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</body>
+</div>
 
-</html>
+{% endblock %}
